@@ -4,7 +4,15 @@ class Chronometer {
     this.intervalId=null;
   }
 
-  start(callback) {
+  /**
+   * keeps track of time, 
+   * by running a function in a 1 second interval, 
+   * which will increment the amount of seconds stored 
+   * in the property `currentTime` by `1`.
+   * @param {*} callback 
+   */
+  //setInterval()
+  start(callback){
     if(callback){
       this.intervalId=setInterval(()=>{
         callback();
@@ -17,34 +25,63 @@ class Chronometer {
     }  
   }
 
+  /**
+   * stores the number of seconds that have passed 
+   * on the `currentTime` property
+   * @returns _number_ of minutes that have passed as an int
+   */
   getMinutes() {
-    const minutes=Math.floor((this.currentTime)/60);
-    return minutes;
+    return Math.floor(this.currentTime/60);
   }
 
+  /**
+   * @returns number of secs that have passed after start of the 
+   * current min
+   */
   getSeconds() {
-    const seconds=this.currentTime%60;
-    return seconds;
+    return Math.floor(this.currentTime-(this.getMinutes(this.currentTime)*60));
   }
 
+  /**
+   * takes a number, and returns a string where the number received 
+   * as an argument has been padded with 0s 
+   * to ensure the value is at least 2 characters long.
+   * @param {*} value 
+   * @return value string
+   */
   computeTwoDigitNumber(value) {
     if(value<10){
       return (`0${value}`)
     }else{
-      return value;
+      return value.toString();
     }
   }
 
+  /**
+   * should clear the interval 
+   * with the id that had been stored in the `intervalId`
+   */
+  //clearInterval()
   stop() {
     clearInterval(this.intervalId);
   }
 
+  /**
+   * resets chronometer
+   * setting currentTime to 0
+   */
   reset() {
     this.currentTime=0;
   }
 
+  /**
+   * Extracts a formatted timestamp for the time elapsed
+   * no @args
+   * @return time since the start formatted as "_mm:ss_"
+   */
+  //computeTwoDigitNumber
   split() {
-    return (`"${this.getMinutes()}:${this.getSeconds()}"`);
+    return (`${this.computeTwoDigitNumber(this.getMinutes())}:${this.computeTwoDigitNumber(this.getSeconds())}`);
   }
 }
 
